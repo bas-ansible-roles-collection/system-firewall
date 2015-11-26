@@ -34,8 +34,9 @@
         rule: deny
         state_ufw: 'no'
         port: 443
+  pre_tasks:
+    - include: tasks/test-firewall-applications-ubuntu-ufw.yml
   roles:
     - ~/system-firewall
   tasks:
-    - include: tasks/test-firewall-applications-ubuntu-ufw.yml
     - include: ../tasks/main.yml
