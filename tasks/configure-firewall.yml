@@ -1,0 +1,36 @@
+---
+# Allow default policies for the system firewall
+
+# Note: Default policies are not modified by this role, however this role will not interfere with any modifications you
+# may make to these policies (I.e. it is safe for you to do this and continue using this role).
+
+- name: configure firewall rules for service - CentOS/firewalld
+  firewalld:
+      service="{{ item.name_firewalld }}"
+         zone="{{ item.zone             | default(omit) }}"
+    permanent="{{ item.permanent        | default (True) }}"
+        state="{{ item.state_firewalld | default ('enabled') }}"
+  when: ansible_distribution == "CentOS" and item.name_firewalld is defined
+  with_items: system_firewall_rules
+  notify: Restart Firewall - CentOS
+
+- name: configure firewall rules for service - Ubuntu/UFW
+  ufw:
+         name="{{ item.name_ufw }}"
+         rule="{{ item.rule | default('allow') }}"
+    direction="{{ item.direction  | default('in') }}"
+       delete="{{ item.state_ufw  | default('no') }}"
+  when: ansible_distribution == "Ubuntu" and item.name_ufw is defined
+  with_items: system_firewall_rules
+  notify: Restart Firewall - Ubuntu
+
+- name: start firewall and enable on startup - CentOS/firewalld
+  service:
+       name=firewalld
+      state=started
+    enabled=yes
+  when: ansible_distribution == "CentOS"
+
+- name: start firewall and enable on startup - Ubuntu/UFW
+  ufw: state=enabled
+  when: ansible_distribution == "Ubuntu"

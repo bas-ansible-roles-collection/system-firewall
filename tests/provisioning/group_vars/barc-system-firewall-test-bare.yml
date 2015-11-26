@@ -1,0 +1,28 @@
+---
+# These variables override those defined by roles
+
+# Note: The 'port' option is not supported by the system firewall role, it used exclusively for testing.
+
+system_firewall_rules:
+  -
+    name_firewalld: ssh
+    name_ufw: OpenSSH
+    port: 22
+  -
+    name_firewalld: http
+    state_firewalld: disabled
+    port: 80
+  -
+    name_firewalld: https
+    permanent: True
+    state_firewalld: enabled
+    port: 443
+  -
+    name_ufw: http-test
+    state_ufw: 'yes'
+    port: 80
+  -
+    name_ufw: https-test
+    rule: deny
+    state_ufw: 'no'
+    port: 443

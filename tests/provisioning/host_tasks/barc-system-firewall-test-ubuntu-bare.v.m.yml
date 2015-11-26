@@ -1,0 +1,18 @@
+---
+# Tasks for the 'barc-system-firewall-test-ubuntu-bare.v.m.yml' node
+
+- name: create a dummy firewall application for http
+  copy:
+    src=data/firewall-profiles/http-test
+    dest=/etc/ufw/applications.d/http-test
+- name: make UFW aware of dummy firewall application for http
+  command: ufw app update http-test
+  changed_when: false
+
+- name: create a dummy firewall application for https
+  copy:
+    src=data/firewall-profiles/https-test
+    dest=/etc/ufw/applications.d/https-test
+- name: make UFW aware of dummy firewall application for https
+  command: ufw app update https-test
+  changed_when: false

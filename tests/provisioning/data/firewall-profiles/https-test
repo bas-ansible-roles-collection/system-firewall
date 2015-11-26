@@ -1,0 +1,4 @@
+[https-test]
+title=HTTPS test firewall application
+description=This firewall application is intended for testing purposes only. It is not supported outside of this.
+ports=443/tcp

@@ -1,0 +1,21 @@
+---
+# Ensure the system firewall is installed, this is almost certainly a formality
+
+- name: install firewall package - CentOS/firewalld
+  yum:
+             pkg={{ item }}
+    update_cache=yes
+           state=present
+  with_items:
+  - firewalld
+  when: ansible_distribution == "CentOS"
+
+- name: install firewall package - Ubuntu/UFW
+  apt:
+                 pkg={{ item }}
+        update_cache=yes
+    cache_valid_time=3600
+               state=present
+  with_items:
+  - ufw
+  when: ansible_distribution == "Ubuntu"

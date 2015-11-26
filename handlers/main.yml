@@ -1,0 +1,10 @@
+---
+# Handlers for system-ssh
+
+- name: Restart Firewall - CentOS
+  service:
+     name=firewalld
+    state=restarted
+
+- name: Restart Firewall - Ubuntu
+  ufw: state=reloaded

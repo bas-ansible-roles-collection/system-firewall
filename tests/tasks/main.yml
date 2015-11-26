@@ -1,0 +1,19 @@
+---
+# Tests the changes made to the system firewall by this role
+
+# Management and configuration checks
+# These checks mirror individual tasks to ensure they execute correctly
+# (I.e. that they create a user in the right package or create the correct config file)
+
+# Core configuration
+
+- include: install-firewall.yml
+
+- include: configure-firewall.yml
+
+# Functionality checks
+# These checks need to run after the package or service has been configured to ensure it is working correctly,
+# using an configuration that may have been set by this role.
+
+# In this role functionality checks are verified by an external VM (to check if ports are open or closed).
+# To do this a special port testing VM will run the 'functional-tests.yml' task file located alongside this file.
