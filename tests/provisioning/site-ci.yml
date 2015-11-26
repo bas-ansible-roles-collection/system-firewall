@@ -35,24 +35,25 @@
         state_ufw: 'no'
         port: 443
   pre_tasks:
+    - name: install firewall package
+      apt:
+                     pkg={{ item }}
+            update_cache=yes
+        cache_valid_time=3600
+                   state=present
+      with_items:
+        - ufw
     - name: copy test firewall application for http
       command: cp data/firewall-profiles/http-test /etc/ufw/applications.d/http-test
       changed_when: false
-
-    # # Debugging
-    # - name: check for ufw command
-    #   command: which ufw
-    #   register: which_ufw
-    # - debug: var=which_ufw
-
     - name: register firewall application for http with UFW
-      shell: ufw app update http-test
+      command: ufw app update http-test
       changed_when: false
     - name: copy test firewall application for https
       command: cp data/firewall-profiles/https-test /etc/ufw/applications.d/https-test
       changed_when: false
     - name: register firewall application for https with UFW
-      shell: ufw app update https-test
+      command: ufw app update https-test
       changed_when: false
   roles:
     - ~/system-firewall
