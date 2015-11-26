@@ -29,8 +29,8 @@ See `tests/README.md` for more information.
 
 If you are using the BAS maintained CentOS 7 base image, 
 from the [BAS Packer VM Templates project](https://github.com/antarctica/packer-vm-templates), you will need to ensure
-you are version *0.3.0* or greater to satisfy the first requirement. Previous versions did not activate the firewall by
-default.
+you are using version *0.3.0* or greater to satisfy the first requirement. Previous versions did not activate the 
+firewall by default.
 
 ## Limitations
 
