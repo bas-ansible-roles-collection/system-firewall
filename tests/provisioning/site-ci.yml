@@ -40,10 +40,10 @@
       changed_when: false
 
     # Debugging
-    - name: ls firewall applications
-      command: ls /etc/ufw/applications.d
-      register: ls_apps
-    - debug: var=ls_apps
+    - name: check for ufw command
+      command: which ufw
+      register: which_ufw
+    - debug: var=which_ufw
 
     - name: register firewall application for http with UFW
       command: ufw app update http-test
