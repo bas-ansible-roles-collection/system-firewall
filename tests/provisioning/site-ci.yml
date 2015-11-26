@@ -38,6 +38,13 @@
     - name: copy test firewall application for http
       command: cp data/firewall-profiles/http-test /etc/ufw/applications.d/http-test
       changed_when: false
+
+    # Debugging
+    - name: ls firewall applications
+      command: ls /etc/ufw/applications.d
+      register: ls_apps
+    - debug: var=ls_apps
+
     - name: register firewall application for http with UFW
       command: ufw app update http-test
       changed_when: false
