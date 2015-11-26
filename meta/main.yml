@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Felix Fennell
-  description: Configures the system firewall for a machine, including default polices and individual services
+  description: Configures the system firewall and manages system firewall services for a machine
   company: British Antarctic Survey
 
   issue_tracker_url: https://jira.ceh.ac.uk/browse/BARC
@@ -20,5 +20,3 @@ galaxy_info:
   - system
 
 dependencies: []
-
-

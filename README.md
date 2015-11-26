@@ -1,41 +1,154 @@
 # System Firewall (`system-firewall`)
 
+Develop:
+[![Build Status](https://semaphoreci.com/api/v1/projects/a0d5bc1d-8247-4dc5-93e3-c25ecdd9f483/615676/badge.svg)](https://semaphoreci.com/antarctica/ansible-system-firewall)
+
+Configures the system firewall and manages system firewall services for a machine
+
+**Part of the BAS Ansible Role Collection (BARC)**
+
+## Overview
+
+* Ensures the relevant system firewall package is installed (`ufw` on Ubuntu and `firewalld` on CentOS)
+* Optionally, enables or disables one or more firewall services (such as SSH) as exceptions in the relevant firewall
+* Ensures the relevant system firewall is activated and enabled on system startup
+
+## Quality Assurance
+
+This role uses manual and automated testing to ensure the features offered by this role work as advertised. 
+See `tests/README.md` for more information.
+
+## Dependencies
+
+* None
+
 ## Requirements
 
-This role is only supported when used with BAS base image greater than the minimum version specified below:
+* If managing CentOS systems, the `firewalld` service must already be active
+* For any system, if the system firewall is already running an exception must be in place to allow SSH connections
 
-| Base Box / Template  | Minimum Version | Notes |
-| -------------------- | --------------- | ----- |
-| `antarctica/trusty`  | 3.0.0           | -     |
-| `antarctica/centos7` | 0.3.0           | -     |
+If you are using the BAS maintained CentOS 7 base image, 
+from the [BAS Packer VM Templates project](https://github.com/antarctica/packer-vm-templates), you will need to ensure
+you are version *0.3.0* or greater to satisfy the first requirement. Previous versions did not activate the firewall by
+default.
 
 ## Limitations
 
+* The system firewall cannot be disabled
+
+This is an intentional limitation. Other roles, which will configure the system firewall for specific purposes, depend 
+on this role to ensure the system firewall is correctly enabled.
+
+Were it possible to disable the system firewall using this role, dependent roles would need to introduce additional
+logic to either, ensure this role configured the firewall, making an option in this role redundant, or add logic to 
+check if the firewall is disabled, and then ensure firewall configuration tasks are skipped. Across multiple roles, the 
+effort to implement, test and support this additional logic is significant. Therefore this role will always ensure the
+system firewall is enabled.
+
+In cases where the system firewall should not be modified, or should be modified in a context specific way, it is 
+recommended to use the Ansible tags assigned to tasks in this role, and others, to skip the tasks in this role and 
+others. By using the conventional tags used in this role, other roles will be automatically adjusted such as to not
+rely on this role ensuring an active firewall is available.
+
+Note: It is strongly recommended that you always use a firewall, whether it is configured by this role or not.
+
+*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
+requests addressing this limitation will **not** be considered.*
+
+See [BARC-76](https://jira.ceh.ac.uk/browse/BARC-76) for further details.
+
+
+
+
+
+
 * It is not possible to change default firewall policies
 
-(This is by design)
+This is an intentional limitation.
 
-* Zones other than the 'public' zone in firewalld are not tested
+(too many differences between CentOS and Ubuntu).
 
-It is possible to specify another zone, but this is not covered by this roles tests currently as it's quite a lot of 
-work to add (get rules for every zone and check).
+*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
+requests addressing this will be considered however.*
+
+See [BARC-]() for further details.
+
+* Managing ports is not supported, firewall services must be used
+
+This is an intentional limitation.
+
+(see BARC-69 for draft comments).
+
+*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
+requests addressing this limitation will **not** be considered.*
+
+See [BARC-]() for further details.
+
+* This role does not support creating services
+
+This is an intentional limitation.
+
+(see BARC-69 for draft comments).
+
+*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
+requests addressing this limitation will **not** be considered.*
+
+See [BARC-]() for further details.
+
+* Zones other than the 'public' zone for `firewalld` are not tested
+
+(It is possible to specify another zone, but this is not covered by this roles tests currently as it's quite a lot of 
+work to add (get rules for every zone and check)).
+
+*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
+requests addressing this will be considered however.*
+
+See [BARC-]() for further details.
 
 * The direction of firewall rules on Ubuntu are not tested
 
-No information is given by `ufw status` to test against.
+(No information is given by `ufw status` to test against.)
 
-* *state_ufw* and *state_firewalld* take reverse arguments
+*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
+requests addressing this will be considered however.*
 
-I.e. state_firewalld asks if a rule should be present, state_ufw asks if a rule be deleted :/
+See [BARC-]() for further details.
+
+* *state_ufw* and *state_firewalld* take opposite arguments
+
+(I.e. state_firewalld asks if a rule should be present, state_ufw asks if a rule be deleted)
+
+*This limitation is considered to be significantly limiting, and a solution will be actively pursued. Pull requests 
+addressing this will be considered however.*
+
+See [BARC-]() for further details.
 
 * For functional tests, there is no reliable way to test if ports are opened without a service listening on such ports
 
-These tests do not current work correctly as netcat relies on something listening on each port being tested.
+(These tests do not current work correctly as netcat relies on something listening on each port being tested.
 I.e. It is not enough to simply open a port, a service has to listen on it, these tests are therefore disabled.
+Functional tests therefore disabled.)
 
-Functional tests therefore disabled.
+*This limitation is considered to be significantly limiting, and a solution will be actively pursued. Pull requests 
+addressing this will be considered however.*
+
+See [BARC-]() for further details.
 
 * For functional tests, there is a gap for services that should be non-contactable on both CentOS and Ubuntu
+
+*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
+requests addressing this will be considered however.*
+
+See [BARC-]() for further details.
+
+
+
+
+
+
+TODO: Review
+
+
 
 ## Usage
 
