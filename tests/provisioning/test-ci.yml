@@ -37,4 +37,5 @@
   roles:
     - ~/system-firewall
   tasks:
+    - include: tasks/test-firewall-applications-ubuntu-ufw.yml
     - include: ../tasks/main.yml
