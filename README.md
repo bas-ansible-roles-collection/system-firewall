@@ -57,98 +57,141 @@ requests addressing this limitation will **not** be considered.*
 
 See [BARC-76](https://jira.ceh.ac.uk/browse/BARC-76) for further details.
 
-
-
-
-
-
 * It is not possible to change default firewall policies
 
-This is an intentional limitation.
+This is an intentional limitation. This ability, setting default actions for different types/sources of traffic, is not
+consistent across system firewall providers supported by this role. `ufw` on Ubuntu implements this using the concept 
+of firewall *policies*, whereas `firewalld` on CentOS use a concept of *zones*.
 
-(too many differences between CentOS and Ubuntu).
+These implementations are different enough that there is no intuitive, or obvious, way for this role to support both. 
+The defaults used for each implementation are considered to be reasonable for most situations.
+
+Where these default implements do need to be modified, this role will not interfere with any changes you may make. 
+When managing firewall services for `firewalld` this role will use always use the default zone, as it is configured on 
+each machine. By default this will be the *public* zone, but if different, another zone will be used instead.
 
 *This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
 requests addressing this will be considered however.*
 
-See [BARC-]() for further details.
+See [BARC-77](https://jira.ceh.ac.uk/browse/BARC-77) for further details.
 
 * Managing ports is not supported, firewall services must be used
 
-This is an intentional limitation.
+This is an intentional limitation. This ensures that any firewall exceptions that are made have meta-data associated 
+with them to explain what is being excepted and why. This allows others to, at a glance, and without consulting any
+project documentation for example, understand, broadly, the state of the system firewall.
 
-(see BARC-69 for draft comments).
+Meta-data in this case includes attributes such as the name of the service and a longer description. A firewall service
+definition will include this meta-data as well as details of the various port(s) that are needed (including multiple 
+ports, port ranges and specific protocols if relevant).
+
+It is accepted that this limitation forces additional work in order to manage the system firewall using this role. 
+However, in most cases, it is expected that other roles that need to make any firewall exceptions will create any 
+firewall services, using templates to set custom port information for example. Where this is the case the impact of 
+this limitation should be negligible.
+
+For some services, such as SSH, the raw port information would typically be enough information, however where a custom
+port is used for SSH, or for less common services, having this additional information aids in auditing and debugging 
+scenarios immensely.
+
+Where this limitation is too great, it is possible to use the `ufw` and `firewalld` Ansible modules directly to allow
+any ports as needed outside of this role. Unless these exceptions conflict with a firewall service managed by this 
+role, this role will not interfere with such exceptions.
 
 *This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
 requests addressing this limitation will **not** be considered.*
 
-See [BARC-]() for further details.
+See [BARC-78](https://jira.ceh.ac.uk/browse/BARC-78) for further details.
 
 * This role does not support creating services
 
-This is an intentional limitation.
+This is an intentional limitation. It is assumed services for all system related services (such as SSH) will exist by 
+default and so can simply be enabled or disabled by this role.
 
-(see BARC-69 for draft comments).
+This role will support enabling any pre-defined services that exist, but will not assist in creating or changing these 
+services, except to enable or disable them. Other, package related, roles should enable/disable firewall services 
+relevant to them, rather than this role.
+
+E.g. The `apache2` role will manage firewall services to enable HTTP (typically on port 80) and HTTPS (typically on 
+port 443). Predefined firewall services typically include services for things like HTTP and HTTPS. Though this role 
+could be used to enable/disable such services, it is recommended that this is done by roles that manage the services 
+binding to these protocols (such as a web-server). This allows for non-conventional ports to be used as a web-server 
+role can create a firewall service with the relevant ports specified (e.g. through Ansible templating). This approach 
+also means the name of the web-server can be specified when inspecting firewall exceptions, which is more useful than 
+a generic a generic name such as 'HTTP'.
 
 *This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
 requests addressing this limitation will **not** be considered.*
 
-See [BARC-]() for further details.
+See [BARC-79](https://jira.ceh.ac.uk/browse/BARC-79) for further details.
 
-* Zones other than the 'public' zone for `firewalld` are not tested
+* Zones other than the default are not tested for `firewalld`
 
-(It is possible to specify another zone, but this is not covered by this roles tests currently as it's quite a lot of 
-work to add (get rules for every zone and check)).
+This role does support using non-default zones when managing firewall services with `firewalld` on CentOS machines.
+However the tests ran as part of this role do not test this.
+
+As this only affects testing, and it is not expected non-default zones will be typically used by services managed by 
+this role, this is not a high priority to add.
 
 *This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
 requests addressing this will be considered however.*
 
-See [BARC-]() for further details.
+See [BARC-80](https://jira.ceh.ac.uk/browse/BARC-80) for further details.
 
 * The direction of firewall rules on Ubuntu are not tested
 
-(No information is given by `ufw status` to test against.)
+This role does support setting the direction for a firewall service with `ufw` on Ubuntu machines. However the tests 
+ran as part of this role do not test this.
+
+This is because the `ufw status` command does not report the direction of a rule/service. It may be possible to 
+interpret information from the underlying `iptables` rules but this has not yet been explored.
+
+As this only affects testing, this is not a high priority to add. Additional functional tests may be able to test this
+feature more broadly, though without specifically testing if the direction attribute is set correctly.
 
 *This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
 requests addressing this will be considered however.*
 
-See [BARC-]() for further details.
+See [BARC-81](https://jira.ceh.ac.uk/browse/BARC-80) for further details.
 
 * *state_ufw* and *state_firewalld* take opposite arguments
 
-(I.e. state_firewalld asks if a rule should be present, state_ufw asks if a rule be deleted)
+I.e. The *state_firewalld* option checks if a service should be present, whereas the *state_ufw* option checks if a 
+service should be deleted. This is obviously confusing and non-intuitive.
+
+This is a consequence of the arguments offered by the underlying `ufw` and `firewalld` Ansible modules used by this 
+role. It appears these modules were developed without respect for each other, leading to this issue.
+
+A workaround for this issue would logically reverse the relevant option for either the `ufw` or `firewalld` modules, 
+however I am not aware of ways to do this using Jinja2. As the arguments for both modules also require different valid
+values (*enabled* vs *yes*) it is not possible to use a consistent option for this either.
 
 *This limitation is considered to be significantly limiting, and a solution will be actively pursued. Pull requests 
 addressing this will be considered however.*
 
-See [BARC-]() for further details.
+See [BARC-82](https://jira.ceh.ac.uk/browse/BARC-82) for further details.
 
 * For functional tests, there is no reliable way to test if ports are opened without a service listening on such ports
 
-(These tests do not current work correctly as netcat relies on something listening on each port being tested.
-I.e. It is not enough to simply open a port, a service has to listen on it, these tests are therefore disabled.
-Functional tests therefore disabled.)
+These tests do not current work correctly when using {{netcat}}, as this relies on something listening on each port 
+being tested. I.e. It is not enough just to open a port. Functional tests are therefore disabled.
+
+These tests are considered important to ensuring this role is fit for purpose and achieves its stated objectives.
 
 *This limitation is considered to be significantly limiting, and a solution will be actively pursued. Pull requests 
 addressing this will be considered however.*
 
-See [BARC-]() for further details.
+See [BARC-83](https://jira.ceh.ac.uk/browse/BARC-83) for further details.
 
-* For functional tests, there is a gap for services that should be non-contactable on both CentOS and Ubuntu
+* For functional tests, there is no test where a firewall service should be non-contactable on both CentOS and Ubuntu
+
+This is possible to add but preluded by the the ability to test if ports are opened at all. However the scenario this
+would cover is not expected to be commonly used, and is therefore a lower priority.
 
 *This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
 requests addressing this will be considered however.*
 
-See [BARC-]() for further details.
-
-
-
-
-
-
-TODO: Review
-
-
+See [BARC-84](https://jira.ceh.ac.uk/browse/BARC-84) for further details.
 
 ## Usage
 
@@ -169,19 +212,31 @@ these policies differ (CentOS/`firewalld` uses *zones*, Ubuntu/`ufw` uses *polic
 * Outgoing traffic, on all ports and protocols, is allowed
 
 Modifying these default policies (rather than making exceptions for specific services) is not currently supported by 
-this role, but is relative easy to do if you need to. This role will not interfere with any such modifications if made.
+this role, see the *limitations* section for more information.
 
-### Firewall rules
+### Firewall services
 
-TODO: This needs updating as firewalld offers no way to control the direction of a rule (at least not in the same way
-as UFW).
-
-Broadly speaking both `firewalld` and `ufw` manage firewall rules in the same way, in that they use the concept of a 
+Broadly speaking both `ufw` and `firewalld` manage firewall rules in the same way, in that they use the concept of a 
 *service* or *application* (*service* will be used as a generic term within this documentation), to represent logical 
 groupings of firewall rules to make exceptions to the default firewall policy.
 
 Examples of services include things such as SSH or a web-server. Examples of firewall rules include things such as,
 specifying port 22 over the TCP protocol.
+
+Despite their similarities, it is not possible to use a common firewall module to manage both `ufw` and `firewalld`.
+
+
+
+
+
+--- edited to here ---
+
+
+
+
+
+TODO: This needs updating as firewalld offers no way to control the direction of a rule (at least not in the same way
+as UFW).
 
 These services can be *enabled* or *disabled* and *allowed* or *denied*. That is to say, the firewall can be told to 
 consider  rules within a service, *enable*, or ignore them, *disable*. Where a rules for a service are considered, the 
