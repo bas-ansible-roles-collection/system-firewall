@@ -2,7 +2,7 @@
 # Tests firewalls are configured correctly by attempting to connect on various ports
 
 # Note: Hosts are hard coded here to test against their enabled firewall services,
-# there is likely a much better way to do this which I will happy adopt in future versions.
+# there is likely a much better way to do this which I will happily adopt in future versions.
 
 - name: test if firewall services that should be contactable on both CentOS and Ubuntu are contactable
   shell: "nmap -p {{ item.port }} barc-system-firewall-test-ubuntu-bare.v.m barc-system-firewall-test-centos-bare.v.m | grep -c open"

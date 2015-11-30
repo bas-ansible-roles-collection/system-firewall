@@ -203,6 +203,21 @@ See [BARC-84](https://jira.ceh.ac.uk/browse/BARC-84) for further details.
 Note: Although both of these firewalls are wrappers around `iptables`, direct configuration of `iptables` is not 
 supported by this role.
 
+Despite their similarities, it is not possible to use a common firewall module to manage both `ufw` and `firewalld`.
+Unfortunately, these modules, in part due to the differences in their respective firewall, do not offer the same 
+arguments in terms of: 
+
+* Argument names - some arguments have equivalents with a different name, others are only available based on the 
+features of the relevant firewall. Where arguments are equivalent, a generic option will be used by this role.
+* Argument values - for arguments that are similar, different firewalls accept different values (e.g. one module may 
+accept 'enabled' or 'disabled', another may accept 'yes' or 'no'). There is currently no mechanism to mask these
+differences, see the *limitations* section for more information.
+* Argument 'logic' - for arguments that are similar, different Ansible firewall modules use opposing 'logical' values.
+I.e. One module may ask, 'should this rule exist?', where a truthy value would cause the rule to exist. Whereas another
+module may ask, for an equivalent argument, 'should this rule not exist?', where a truthy value would cause the rule to
+not exist. This is understandably confusing and non-intuitive and is a recognised limitation, see the *limitations* 
+section for more information.
+
 ### Default policies
 
 Both CentOS and Ubuntu ship with default policies for their respective firewalls. Though the concepts used to implement
@@ -223,60 +238,205 @@ groupings of firewall rules to make exceptions to the default firewall policy.
 Examples of services include things such as SSH or a web-server. Examples of firewall rules include things such as,
 specifying port 22 over the TCP protocol.
 
-Despite their similarities, it is not possible to use a common firewall module to manage both `ufw` and `firewalld`.
+Each firewall uses its own format for defining firewall services, as well as conventional locations to store such
+service definitions.
 
+This role does not support creating firewall service definitions, see the *limitations* section for more information.
 
+### Managing firewall services
 
+Each service can be made active (where its rules will be applied) or in-active (where its rules will be ignored). Some
+firewalls support controlling the direction of rules (i.e. make an exception to *allow* traffic which would normally be
+denied, or *deny* traffic which would normally by allowed).
 
+This role is only intended to manage firewall services for system level utilities, such as SSH. Services for other
+applications, such as a web server, should be managed by dedicated roles. See the *limitations* section for more 
+information.
 
---- edited to here ---
+### Pre-enabled firewall services
 
+Due to the requirement of this role for the system firewall to be active, the firewall service for SSH is assumed to be
+enabled before this role is applied. This is assumed as without such a firewall exception, Ansible would be unable to
+manage a machine.
 
+### Typical playbook
 
+```yaml
+---
 
-
-TODO: This needs updating as firewalld offers no way to control the direction of a rule (at least not in the same way
-as UFW).
-
-These services can be *enabled* or *disabled* and *allowed* or *denied*. That is to say, the firewall can be told to 
-consider  rules within a service, *enable*, or ignore them, *disable*. Where a rules for a service are considered, the 
-firewall will either permit, *allow*, connections to the ports specified by a service, or reject, *deny*, them.
-
-This allows for exceptions to allow connections which are usually blocked (i.e. incoming connections, in which case 
-enabled/allowed would be used), or where connections are usually allowed, (i.e. outgoing connections, in which case 
-enabled/denied would be used).
-
-As these concepts are similar between both supported firewalls, a common approach is used for specify where services 
-should be enabled or disabled and allowed or denied.
-
-Sadly the terms used for these properties do differ between providers and their associated Ansible modules, as do in 
-many cases the names of services, such as SSH. This role tends to expose such differences between modules, where they 
-exist, to avoid introducing ambiguity and allowing knowledge of either provider/module to be used directly. Some 
-differences are masked by this role however, such as:
-
-* *name* - The name of the firewall service being managed, AKA *service* (`firewalld` module)
-* *action_* - Whether traffic matching rules for a service should be allowed or denied, AKA *state* (`firewalld` 
-module) or *rule* (`ufw` module)
-
-In some cases an individual firewall may require some options the other does not use. In these cases you can 
-omit non-relevant values if you are only targeting machines that use the other firewall, if you are targeting a mixture
-of machines, you can safely set the option and it will only be used where needed.
-
-As an example, setting *system_firewall_rules* to the example below, will enable/allow incoming connections to the SSH 
-service for both `firewalld` and `ufw`:
-
-```yml
-system_firewall_rules:
-  - name_firewalld: ssh
-    name_ufw: OpenSSH
+- name: setup system firewall
+  hosts: all
+  become: yes
+  vars:
+    - system_firewall_rules:
+      -
+        name_firewalld: ssh
+        name_ufw: OpenSSH
+  roles:
+    - BARC.system-firewall
 ```
 
-### Pre-enabled services
+Note: This example is somewhat contrived as the SSH firewall service will be typically enabled already. As this role is
+only intended for managing system level firewall services, an actual typical example would not manage any service, it
+would like this:
 
-When using suitable BAS base images some firewall services will be automatically enabled prior to this role being 
-applied. These services can theoretically be disabled using this role, or manually, but doing so may cause Ansible to 
-break is therefore not recommended. The following services are pre-enabled:
+```yaml
+---
 
-* *SSH* - Required for Ansible to communicate with a machine (AKA *ssh* to `firewalld` and *OpenSSH* to `ufw`)
+- name: setup system firewall
+  hosts: all
+  become: yes
+  vars: []
+  roles:
+    - BARC.system-firewall
+```
 
+### Tags
 
+BARC roles use standardised tags to control which aspects of an environment are changed by roles. Where relevant, tags
+will be applied at a role, or task(s) level, as indicated below.
+
+This role uses the following tags, for all tasks:
+
+TODO: Add other tags for package configurations etc.
+
+* [**BARC_CONFIGURE**](https://antarctica.hackpad.com/BARC-Standardised-Tags-AviQxxiBa3y#:h=BARC_CONFIGURE)
+* [**BARC_CONFIGURE_SYSTEM**](https://antarctica.hackpad.com/BARC-Standardised-Tags-AviQxxiBa3y#:h=BARC_CONFIGURE_SYSTEM)
+* [**BARC_CONFIGURE_FIREWALL**](https://antarctica.hackpad.com/BARC-Standardised-Tags-AviQxxiBa3y#:h=BARC_CONFIGURE_FIREWALL)
+* [**BARC_CONFIGURE_SECURITY**](https://antarctica.hackpad.com/BARC-Standardised-Tags-AviQxxiBa3y#:h=BARC_CONFIGURE_SECURITY)
+* [**BARC_CONFIGURE_PACKAGES**](https://antarctica.hackpad.com/BARC-Standardised-Tags-AviQxxiBa3y#:h=BARC_CONFIGURE_PACKAGE)
+* [**BARC_INSTALL_PACKAGES**](https://antarctica.hackpad.com/BARC-Standardised-Tags-AviQxxiBa3y#:h=BARC_INSTALL_PACKAGE)
+
+### Variables
+
+#### *system_users_users*
+
+A list of operating system user accounts, and their properties, to be managed by this role.
+
+Structured as a list of items, with each item having the following properties:
+
+* *name_ufw*
+    * **MUST** be specified where a firewall service is to be managed on Ubuntu/`ufw`, otherwise **MUST NOT** be
+    specified
+    * Specifies the name of the firewall application (service) to be managed
+    * The presence of this option is used to determine this item applies to Ubuntu/`ufw` machines
+    * Values **MUST** be valid user firewall applications (services), as determined by the `ufw` firewall
+    * Example: `foo`
+* *rule*
+    * **MAY** be specified
+    * Specifies whether traffic associated with the firewall service specified by the *name_ufw* variable is to be 
+    allowed or denied
+    * Values **MUST** use one of these options, as determined by the `ufw` firewall:
+      * `allow`
+      * `deny`
+    * Where not specified, a value of `allow` will be assumed
+    * Default: `allow`
+* *direction*
+    * **MAY** be specified
+    * Specifies how traffic associated with the firewall service specified by the *name_ufw* variable is to be managed 
+    in terms of its direction
+    * Values **MUST** use one of these options, as determined by the `ufw` firewall:
+      * `in`
+      * `out`
+      * `incoming`
+      * `outgoing`
+      * `routed`
+    * Typically, the values, `in` and `out` will be used, with `in` the most common
+    * Where not specified, a value of `in` will be assumed
+    * Default: `in`
+* *state_ufw*
+    * **MAY** be specified
+    * Specifies if the rules associated with the firewall service specified by the *name_ufw* variable should exist
+    * I.e. Where this option is `yes`, associated rules will be removed, if `no` associated rules will be kept
+    * Note: The logical state of this option differs from the *state_firewalld* option as, though similar in purpose, 
+    these options ask a logically different question.
+    * Values **MUST** use one of these options, as determined by the `ufw` firewall:
+      * `yes`
+      * `no`
+    * Values **MUST** be quoted to prevent Ansible coercing values to True/False which is invalid for this option
+    * Where not specified, a value of `no` will be assumed
+    * Default: `no`
+* *name_firewalld*
+    * **MUST** be specified where a firewall service is to be managed on CentOS/`firewalld`, otherwise **MUST NOT** be
+    specified
+    * Specifies the name of the firewall service to be managed
+    * The presence of this option is used to determine this item applies to CentOS/`firewalld` machines
+    * Values **MUST** be valid user firewall services, as determined by the `firewalld` firewall
+    * Example: `foo`
+* *zone*
+    * **MAY** be specified
+    * Specifies in which firewall zone rules associated with the service specified by the *name_firewalld* variable 
+    will be managed within (e.g. created or removed)
+    * Values **MUST** be a valid firewall zone, as determined by the `firewalld` firewall
+    * Where not specified, the default zone configured by the operating system will be used, this defaults to `public`
+    * Example: `public`
+* *permanent*
+    * **MAY** be specified
+    * Specifies if the rules associated with the service specified by the *name_firewalld* variable should apply only
+    until the machine is restarted, or if it should persist until changed or removed
+    * Values **MUST** use one of these options, as determined by the `firewalld` firewall:
+      * `True`
+      * `False`
+    * Values **SHOULD** not be quoted to ensure the value is treated as a binary data-type, as opposed to a string
+    * Where not specified, a value of `True` will be assumed
+    * Default: `True`
+* *state_firewalld*
+    * **MAY** be specified
+    * Specifies if the rules associated with the service specified by the *name_firewalld* variable should exist
+    * I.e. Where this option is `yes`, associated rules will be kept, if `no` associated rules will be removed
+    * Note: The logical state of this option differs from the *state_firewalld* option as, though similar in purpose, 
+    these options ask a logically different question.
+    * Values **MUST** use one of these options, as determined by the `firewalld` firewall:
+      * `enabled`
+      * `disabled`
+    * Where not specified, a value of `enabled` will be assumed
+    * Default: `enabled`
+
+Default: `[]` - an empty list
+
+## Developing
+
+### Issue tracking
+
+Issues, bugs, improvements, questions, suggestions and other tasks related to this package are managed through the 
+[BAS Ansible Role Collection](https://jira.ceh.ac.uk/projects/BARC) (BARC) project on Jira.
+
+This service is currently only available to BAS or NERC staff, although external collaborators can be added on request.
+See our contributing policy for more information.
+
+### Source code
+
+All changes should be committed, via pull request, to the canonical repository, which for this project is:
+
+`ssh://git@stash.ceh.ac.uk:7999/barc/system-firewall.git`
+
+A mirror of this repository is maintained on GitHub. Changes are automatically pushed from the canonical repository to
+this mirror, in a one-way process.
+
+`git@github.com:antarctica/ansible-system-firewall.git`
+
+Note: The canonical repository is only accessible within the NERC firewall. External collaborators, please make pull 
+requests against the mirrored GitHub repository and these will be merged as appropriate.
+
+### Contributing policy
+
+This project welcomes contributions, see `CONTRIBUTING.md` for our general policy.
+
+The [Git flow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow/) 
+workflow is used to manage the development of this project:
+
+* Discrete changes should be made within feature branches, created from and merged back into develop 
+(where small changes may be made directly)
+* When ready to release a set of features/changes, create a release branch from develop, update documentation as 
+required and merge into master with a tagged, semantic version (e.g. v1.2.3)
+* After each release, the master branch should be merged with develop to restart the process
+* High impact bugs can be addressed in hotfix branches, created from and merged into master (then develop) directly
+
+## Licence
+
+Copyright 2015 NERC BAS.
+
+Unless stated otherwise, all documentation is licensed under the Open Government License - version 3. All code is
+licensed under the MIT license.
+
+Copies of these licenses are included within this role.

@@ -24,13 +24,13 @@
   with_items: system_firewall_rules
   notify: Restart Firewall - Ubuntu
 
-- name: start firewall and enable on startup - CentOS/firewalld
+- name: ensure firewall is active and enabled on start up - CentOS/firewalld
   service:
        name=firewalld
       state=started
     enabled=yes
   when: ansible_distribution == "CentOS"
 
-- name: start firewall and enable on startup - Ubuntu/UFW
+- name: ensure firewall is active and enabled on start up - Ubuntu/UFW
   ufw: state=enabled
   when: ansible_distribution == "Ubuntu"
