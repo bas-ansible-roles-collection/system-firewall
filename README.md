@@ -1,5 +1,8 @@
 # System Firewall (`system-firewall`)
 
+Master:
+[![Build Status](https://semaphoreci.com/api/v1/projects/a0d5bc1d-8247-4dc5-93e3-c25ecdd9f483/617819/badge.svg)](https://semaphoreci.com/antarctica/ansible-system-firewall)
+
 Develop:
 [![Build Status](https://semaphoreci.com/api/v1/projects/a0d5bc1d-8247-4dc5-93e3-c25ecdd9f483/615676/badge.svg)](https://semaphoreci.com/antarctica/ansible-system-firewall)
 
