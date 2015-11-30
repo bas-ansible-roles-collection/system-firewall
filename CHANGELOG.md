@@ -5,5 +5,12 @@ This role adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased][unreleased]
 
-* Initial version - with support for enabling the system firewall and managing firewall services
+### Added
 
+* Build badge for master branch
+
+## 0.1.0 - 30/11/2015
+
+### Added
+
+* Initial version - with support for enabling the system firewall and managing firewall services
