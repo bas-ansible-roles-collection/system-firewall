@@ -11,6 +11,9 @@ This role adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 * Missing 'BARC_INSTALL' tag
 * Missing instructions for setting up CI for the master branch
 
+### Changed
+
+* Name of CI playbook to fit with new conventions
 
 ## 0.1.0 - 30/11/2015
 
