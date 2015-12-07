@@ -13,8 +13,8 @@ Configures the system firewall and manages system firewall services for a machin
 ## Overview
 
 * Ensures the relevant system firewall package is installed (`ufw` on Ubuntu and `firewalld` on CentOS)
-* Optionally, enables or disables one or more firewall services (such as SSH) as exceptions in the relevant firewall
 * Ensures the relevant system firewall is activated and enabled on system startup
+* Optionally, enables or disables one or more firewall services (such as SSH) as exceptions in the relevant firewall
 
 ## Quality Assurance
 
@@ -55,8 +55,8 @@ rely on this role ensuring an active firewall is available.
 
 Note: It is strongly recommended that you always use a firewall, whether it is configured by this role or not.
 
-*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
-requests addressing this limitation will **not** be considered.*
+*This limitation is **NOT** considered to be significant. Solutions will **NOT** be actively pursued.*
+*Pull requests to address this will **NOT** be considered.*
 
 See [BARC-76](https://jira.ceh.ac.uk/browse/BARC-76) for further details.
 
@@ -73,8 +73,8 @@ Where these default implements do need to be modified, this role will not interf
 When managing firewall services for `firewalld` this role will use always use the default zone, as it is configured on 
 each machine. By default this will be the *public* zone, but if different, another zone will be used instead.
 
-*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
-requests addressing this will be considered however.*
+*This limitation is **NOT** considered to be significant. Solutions will **NOT** be actively pursued.*
+*Pull requests to address this will be considered.*
 
 See [BARC-77](https://jira.ceh.ac.uk/browse/BARC-77) for further details.
 
@@ -101,8 +101,8 @@ Where this limitation is too great, it is possible to use the `ufw` and `firewal
 any ports as needed outside of this role. Unless these exceptions conflict with a firewall service managed by this 
 role, this role will not interfere with such exceptions.
 
-*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
-requests addressing this limitation will **not** be considered.*
+*This limitation is **NOT** considered to be significant. Solutions will **NOT** be actively pursued.*
+*Pull requests to address this will **NOT** be considered.*
 
 See [BARC-78](https://jira.ceh.ac.uk/browse/BARC-78) for further details.
 
@@ -123,8 +123,8 @@ role can create a firewall service with the relevant ports specified (e.g. throu
 also means the name of the web-server can be specified when inspecting firewall exceptions, which is more useful than 
 a generic a generic name such as 'HTTP'.
 
-*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
-requests addressing this limitation will **not** be considered.*
+*This limitation is **NOT** considered to be significant. Solutions will **NOT** be actively pursued.*
+*Pull requests to address this will **NOT** be considered.*
 
 See [BARC-79](https://jira.ceh.ac.uk/browse/BARC-79) for further details.
 
@@ -136,8 +136,8 @@ However the tests ran as part of this role do not test this.
 As this only affects testing, and it is not expected non-default zones will be typically used by services managed by 
 this role, this is not a high priority to add.
 
-*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
-requests addressing this will be considered however.*
+*This limitation is **NOT** considered to be significant. Solutions will **NOT** be actively pursued.*
+*Pull requests to address this will be considered.*
 
 See [BARC-80](https://jira.ceh.ac.uk/browse/BARC-80) for further details.
 
@@ -152,8 +152,8 @@ interpret information from the underlying `iptables` rules but this has not yet 
 As this only affects testing, this is not a high priority to add. Additional functional tests may be able to test this
 feature more broadly, though without specifically testing if the direction attribute is set correctly.
 
-*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
-requests addressing this will be considered however.*
+*This limitation is **NOT** considered to be significant. Solutions will **NOT** be actively pursued.*
+*Pull requests to address this will be considered.*
 
 See [BARC-81](https://jira.ceh.ac.uk/browse/BARC-80) for further details.
 
@@ -169,8 +169,8 @@ A workaround for this issue would logically reverse the relevant option for eith
 however I am not aware of ways to do this using Jinja2. As the arguments for both modules also require different valid
 values (*enabled* vs *yes*) it is not possible to use a consistent option for this either.
 
-*This limitation is considered to be significantly limiting, and a solution will be actively pursued. Pull requests 
-addressing this will be considered however.*
+*This limitation is considered to be significant. Solutions will be actively pursued.*
+*Pull requests to address this will be gratefully considered and given priority.*
 
 See [BARC-82](https://jira.ceh.ac.uk/browse/BARC-82) for further details.
 
@@ -181,8 +181,8 @@ being tested. I.e. It is not enough just to open a port. Functional tests are th
 
 These tests are considered important to ensuring this role is fit for purpose and achieves its stated objectives.
 
-*This limitation is considered to be significantly limiting, and a solution will be actively pursued. Pull requests 
-addressing this will be considered however.*
+*This limitation is considered to be significant. Solutions will be actively pursued.*
+*Pull requests to address this will be gratefully considered and given priority.*
 
 See [BARC-83](https://jira.ceh.ac.uk/browse/BARC-83) for further details.
 
@@ -191,8 +191,8 @@ See [BARC-83](https://jira.ceh.ac.uk/browse/BARC-83) for further details.
 This is possible to add but preluded by the the ability to test if ports are opened at all. However the scenario this
 would cover is not expected to be commonly used, and is therefore a lower priority.
 
-*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
-requests addressing this will be considered however.*
+*This limitation is **NOT** considered to be significant. Solutions will **NOT** be actively pursued.*
+*Pull requests to address this will be considered.*
 
 See [BARC-84](https://jira.ceh.ac.uk/browse/BARC-84) for further details.
 
@@ -267,7 +267,7 @@ manage a machine.
 ```yaml
 ---
 
-- name: setup system firewall
+- name: configure firewall
   hosts: all
   become: yes
   vars:
@@ -299,7 +299,7 @@ would like this:
 BARC roles use standardised tags to control which aspects of an environment are changed by roles. Where relevant, tags
 will be applied at a role, or task(s) level, as indicated below.
 
-This role uses the following tags, for all tasks:
+This role uses the following tags, for various tasks:
 
 TODO: Add other tags for package configurations etc.
 
@@ -315,6 +315,8 @@ TODO: Add other tags for package configurations etc.
 
 #### *system_users_users*
 
+* **MAY** be specified
+
 A list of operating system user accounts, and their properties, to be managed by this role.
 
 Structured as a list of items, with each item having the following properties:
@@ -323,7 +325,7 @@ Structured as a list of items, with each item having the following properties:
     * **MUST** be specified where a firewall service is to be managed on Ubuntu/`ufw`, otherwise **MUST NOT** be
     specified
     * Specifies the name of the firewall application (service) to be managed
-    * The presence of this option is used to determine this item applies to Ubuntu/`ufw` machines
+    * The presence of this option determines this item applies to Ubuntu/`ufw` machines
     * Values **MUST** be valid user firewall applications (services), as determined by the `ufw` firewall
     * Example: `foo`
 * *rule*
@@ -364,7 +366,7 @@ Structured as a list of items, with each item having the following properties:
     * **MUST** be specified where a firewall service is to be managed on CentOS/`firewalld`, otherwise **MUST NOT** be
     specified
     * Specifies the name of the firewall service to be managed
-    * The presence of this option is used to determine this item applies to CentOS/`firewalld` machines
+    * The presence of this option determines this item applies to CentOS/`firewalld` machines
     * Values **MUST** be valid user firewall services, as determined by the `firewalld` firewall
     * Example: `foo`
 * *zone*
