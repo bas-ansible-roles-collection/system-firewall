@@ -2,6 +2,7 @@
 
 - include: install-firewall.yml
   tags:
+     - BARC_INSTALL
      - BARC_INSTALL_PACKAGES
 
 - include: configure-firewall.yml
