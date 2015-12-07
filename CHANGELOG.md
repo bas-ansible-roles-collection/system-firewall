@@ -9,6 +9,8 @@ This role adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 * Build badge for master branch
 * Missing 'BARC_INSTALL' tag
+* Missing instructions for setting up CI for the master branch
+
 
 ## 0.1.0 - 30/11/2015
 
