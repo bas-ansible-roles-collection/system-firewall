@@ -21,3 +21,4 @@
 # Source: https://jira.ceh.ac.uk/browse/BARC-105
 
 - src: https://github.com/bas-ansible-roles-collection/system-hostname
+  name: bas-ansible-roles-collection.system-hostname

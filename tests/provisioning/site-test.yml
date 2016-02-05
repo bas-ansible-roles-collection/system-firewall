@@ -27,6 +27,7 @@
   remote_user: controller
   become: yes
   roles:
+    - bas-ansible-roles-collection.system-hostname
     - ../../../system-firewall
   tasks:
     - name: flush handlers to apply firewall changes before testing

@@ -9,6 +9,7 @@ Note: Developers - make sure to set the `BARC_role_version` variable when releas
 
 ### Fixed
 
+* Missing 'system-hostname' role application in test playbook
 * BARC manifest support updated to fix issues where multiple BARC roles are applied to the same machine
 * Typos in BARC manifest documentation
 
