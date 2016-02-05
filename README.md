@@ -328,7 +328,6 @@ TODO: Add other tags for package configurations etc.
 
 ### Variables
 
-#### *system_users_users*
 #### *BARC_role_name*
 
 * **MUST NOT** be specified
@@ -343,10 +342,11 @@ TODO: Add other tags for package configurations etc.
 * See the *BARC roles manifest* section for more information
 * Example: 2.0.0
 
+#### *system_firewall_rules*
 
 * **MAY** be specified
 
-A list of operating system user accounts, and their properties, to be managed by this role.
+A list of firewall services, and their properties, to be managed by this role.
 
 Structured as a list of items, with each item having the following properties:
 

@@ -18,6 +18,7 @@ Note: Developers - make sure to set the `BARC_role_version` variable when releas
 
 * README formatting and typos
 * Minor corrections to other files for formatting and typos
+* Typo in test task file name
 
 ### Changed
 
