@@ -18,11 +18,17 @@ Note: Developers - make sure to set the `BARC_role_version` variable when releas
 
 * README formatting and typos
 * Minor corrections to other files for formatting and typos
+* Pinning Ansible to pre-2.0 version in CI
 * Typo in test task file name
 
 ### Changed
 
 * Name of CI playbook to fit with new conventions
+* Migrating from old Ansible Galaxy namespace, 'BARC', to 'bas-ansible-roles-collection'
+* Migrating from old Ansible Galaxy 'categories' to new 'tags' meta-data
+* Migrating from old Repository in 'antarctica' to 'bas-ansible-roles-collection'
+* Migrating from old Semaphore 'antarctica' organisation to 'bas-ansible-roles-collection'
+* Simplifying CI setup tasks
 
 ## 0.1.0 - 30/11/2015
 

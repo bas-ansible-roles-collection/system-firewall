@@ -290,7 +290,7 @@ manage a machine.
         name_firewalld: ssh
         name_ufw: OpenSSH
   roles:
-    - BARC.system-firewall
+    - bas-ansible-roles-collection.system-firewall
 ```
 
 Note: This example is somewhat contrived as the SSH firewall service will be typically enabled already. As this role is
@@ -305,7 +305,7 @@ would like this:
   become: yes
   vars: []
   roles:
-    - BARC.system-firewall
+    - bas-ansible-roles-collection.system-firewall
 ```
 
 ### Tags
@@ -434,7 +434,7 @@ Default: `[]` - an empty list
 ### Issue tracking
 
 Issues, bugs, improvements, questions, suggestions and other tasks related to this package are managed through the 
-[BAS Ansible Role Collection](https://jira.ceh.ac.uk/projects/BARC) (BARC) project on Jira.
+[BAS Ansible Roles Collection](https://jira.ceh.ac.uk/projects/BARC) (BARC) project on Jira.
 
 This service is currently only available to BAS or NERC staff, although external collaborators can be added on request.
 See our contributing policy for more information.
@@ -448,7 +448,7 @@ All changes should be committed, via pull request, to the canonical repository, 
 A mirror of this repository is maintained on GitHub. Changes are automatically pushed from the canonical repository to
 this mirror, in a one-way process.
 
-`git@github.com:antarctica/ansible-system-firewall.git`
+`git@github.com:bas-ansible-roles-collection/system-firewall.git`
 
 Note: The canonical repository is only accessible within the NERC firewall. External collaborators, please make pull 
 requests against the mirrored GitHub repository and these will be merged as appropriate.
