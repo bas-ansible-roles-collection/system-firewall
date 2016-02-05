@@ -1,10 +1,10 @@
 # System Firewall (`system-firewall`)
 
 Master:
-[![Build Status](https://semaphoreci.com/api/v1/projects/a0d5bc1d-8247-4dc5-93e3-c25ecdd9f483/617819/badge.svg)](https://semaphoreci.com/antarctica/ansible-system-firewall)
+[![Build Status](https://semaphoreci.com/api/v1/bas-ansible-roles-collection/system-firewall/branches/master/badge.svg)](https://semaphoreci.com/bas-ansible-roles-collection/system-firewall)
 
 Develop:
-[![Build Status](https://semaphoreci.com/api/v1/projects/a0d5bc1d-8247-4dc5-93e3-c25ecdd9f483/615676/badge.svg)](https://semaphoreci.com/antarctica/ansible-system-firewall)
+[![Build Status](https://semaphoreci.com/api/v1/bas-ansible-roles-collection/system-firewall/branches/develop/badge.svg)](https://semaphoreci.com/bas-ansible-roles-collection/system-firewall)
 
 Configures the system firewall and manages system firewall services for a machine
 
