@@ -3,8 +3,8 @@
 
 
 # BARC specific variables
-BARC_role_name: system-firewall
-BARC_role_version: 0.2.0
+system_firewall_barc_role_name: system-firewall
+system_firewall_barc_role_version: 0.2.1
 
 # system-firewall specific variables
 system_firewall_rules: []
