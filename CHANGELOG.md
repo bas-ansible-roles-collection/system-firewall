@@ -3,6 +3,8 @@
 All notable changes to this role will be documented in this file.
 This role adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+Note: Developers - make sure to set the `BARC_role_version` variable when releasing new versions of this role.
+
 ## [Unreleased][unreleased]
 
 ### Added
@@ -10,6 +12,7 @@ This role adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 * Build badge for master branch
 * Missing 'BARC_INSTALL' tag
 * Missing instructions for setting up CI for the master branch
+* Local facts to record this role has been applied to a system and its version, plus supporting documentation sections
 
 ### Fixed
 
