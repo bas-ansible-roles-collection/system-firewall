@@ -2,6 +2,7 @@
 
 - include: install-firewall.yml
   tags:
+     - BARC_INSTALL
      - BARC_INSTALL_PACKAGES
 
 - include: configure-firewall.yml
@@ -11,3 +12,7 @@
      - BARC_CONFIGURE_PACKAGES
      - BARC_CONFIGURE_FIREWALL
      - BARC_CONFIGURE_SECURITY
+
+- include: register-role.yml
+  tags:
+    - BARC_ROLE_REGISTRATION

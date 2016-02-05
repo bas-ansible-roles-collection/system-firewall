@@ -20,7 +20,7 @@
   remote_user: controller
   become: yes
   tasks:
-    - include: tasks/test-firewall-applications-ubuntu-ufw.yml
+    - include: host_tasks/barc-system-firewall-test-port-test.v.m.yml
 
 - name: setup and test the system firewall role
   hosts: barc-system-firewall-test-nodes

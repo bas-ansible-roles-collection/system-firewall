@@ -1,10 +1,10 @@
 # System Firewall (`system-firewall`)
 
 Master:
-[![Build Status](https://semaphoreci.com/api/v1/projects/a0d5bc1d-8247-4dc5-93e3-c25ecdd9f483/617819/badge.svg)](https://semaphoreci.com/antarctica/ansible-system-firewall)
+[![Build Status](https://semaphoreci.com/api/v1/bas-ansible-roles-collection/system-firewall/branches/master/badge.svg)](https://semaphoreci.com/bas-ansible-roles-collection/system-firewall)
 
 Develop:
-[![Build Status](https://semaphoreci.com/api/v1/projects/a0d5bc1d-8247-4dc5-93e3-c25ecdd9f483/615676/badge.svg)](https://semaphoreci.com/antarctica/ansible-system-firewall)
+[![Build Status](https://semaphoreci.com/api/v1/bas-ansible-roles-collection/system-firewall/branches/develop/badge.svg)](https://semaphoreci.com/bas-ansible-roles-collection/system-firewall)
 
 Configures the system firewall and manages system firewall services for a machine
 
@@ -13,8 +13,8 @@ Configures the system firewall and manages system firewall services for a machin
 ## Overview
 
 * Ensures the relevant system firewall package is installed (`ufw` on Ubuntu and `firewalld` on CentOS)
-* Optionally, enables or disables one or more firewall services (such as SSH) as exceptions in the relevant firewall
 * Ensures the relevant system firewall is activated and enabled on system startup
+* Optionally, enables or disables one or more firewall services (such as SSH) as exceptions in the relevant firewall
 
 ## Quality Assurance
 
@@ -55,8 +55,8 @@ rely on this role ensuring an active firewall is available.
 
 Note: It is strongly recommended that you always use a firewall, whether it is configured by this role or not.
 
-*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
-requests addressing this limitation will **not** be considered.*
+*This limitation is **NOT** considered to be significant. Solutions will **NOT** be actively pursued.*
+*Pull requests to address this will **NOT** be considered.*
 
 See [BARC-76](https://jira.ceh.ac.uk/browse/BARC-76) for further details.
 
@@ -73,8 +73,8 @@ Where these default implements do need to be modified, this role will not interf
 When managing firewall services for `firewalld` this role will use always use the default zone, as it is configured on 
 each machine. By default this will be the *public* zone, but if different, another zone will be used instead.
 
-*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
-requests addressing this will be considered however.*
+*This limitation is **NOT** considered to be significant. Solutions will **NOT** be actively pursued.*
+*Pull requests to address this will be considered.*
 
 See [BARC-77](https://jira.ceh.ac.uk/browse/BARC-77) for further details.
 
@@ -101,8 +101,8 @@ Where this limitation is too great, it is possible to use the `ufw` and `firewal
 any ports as needed outside of this role. Unless these exceptions conflict with a firewall service managed by this 
 role, this role will not interfere with such exceptions.
 
-*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
-requests addressing this limitation will **not** be considered.*
+*This limitation is **NOT** considered to be significant. Solutions will **NOT** be actively pursued.*
+*Pull requests to address this will **NOT** be considered.*
 
 See [BARC-78](https://jira.ceh.ac.uk/browse/BARC-78) for further details.
 
@@ -123,8 +123,8 @@ role can create a firewall service with the relevant ports specified (e.g. throu
 also means the name of the web-server can be specified when inspecting firewall exceptions, which is more useful than 
 a generic a generic name such as 'HTTP'.
 
-*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
-requests addressing this limitation will **not** be considered.*
+*This limitation is **NOT** considered to be significant. Solutions will **NOT** be actively pursued.*
+*Pull requests to address this will **NOT** be considered.*
 
 See [BARC-79](https://jira.ceh.ac.uk/browse/BARC-79) for further details.
 
@@ -136,8 +136,8 @@ However the tests ran as part of this role do not test this.
 As this only affects testing, and it is not expected non-default zones will be typically used by services managed by 
 this role, this is not a high priority to add.
 
-*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
-requests addressing this will be considered however.*
+*This limitation is **NOT** considered to be significant. Solutions will **NOT** be actively pursued.*
+*Pull requests to address this will be considered.*
 
 See [BARC-80](https://jira.ceh.ac.uk/browse/BARC-80) for further details.
 
@@ -152,8 +152,8 @@ interpret information from the underlying `iptables` rules but this has not yet 
 As this only affects testing, this is not a high priority to add. Additional functional tests may be able to test this
 feature more broadly, though without specifically testing if the direction attribute is set correctly.
 
-*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
-requests addressing this will be considered however.*
+*This limitation is **NOT** considered to be significant. Solutions will **NOT** be actively pursued.*
+*Pull requests to address this will be considered.*
 
 See [BARC-81](https://jira.ceh.ac.uk/browse/BARC-80) for further details.
 
@@ -169,8 +169,8 @@ A workaround for this issue would logically reverse the relevant option for eith
 however I am not aware of ways to do this using Jinja2. As the arguments for both modules also require different valid
 values (*enabled* vs *yes*) it is not possible to use a consistent option for this either.
 
-*This limitation is considered to be significantly limiting, and a solution will be actively pursued. Pull requests 
-addressing this will be considered however.*
+*This limitation is considered to be significant. Solutions will be actively pursued.*
+*Pull requests to address this will be gratefully considered and given priority.*
 
 See [BARC-82](https://jira.ceh.ac.uk/browse/BARC-82) for further details.
 
@@ -181,8 +181,8 @@ being tested. I.e. It is not enough just to open a port. Functional tests are th
 
 These tests are considered important to ensuring this role is fit for purpose and achieves its stated objectives.
 
-*This limitation is considered to be significantly limiting, and a solution will be actively pursued. Pull requests 
-addressing this will be considered however.*
+*This limitation is considered to be significant. Solutions will be actively pursued.*
+*Pull requests to address this will be gratefully considered and given priority.*
 
 See [BARC-83](https://jira.ceh.ac.uk/browse/BARC-83) for further details.
 
@@ -191,12 +191,26 @@ See [BARC-83](https://jira.ceh.ac.uk/browse/BARC-83) for further details.
 This is possible to add but preluded by the the ability to test if ports are opened at all. However the scenario this
 would cover is not expected to be commonly used, and is therefore a lower priority.
 
-*This limitation is **not** considered to be significantly limiting, and a solution will not be actively pursued. Pull 
-requests addressing this will be considered however.*
+*This limitation is **NOT** considered to be significant. Solutions will **NOT** be actively pursued.*
+*Pull requests to address this will be considered.*
 
 See [BARC-84](https://jira.ceh.ac.uk/browse/BARC-84) for further details.
 
 ## Usage
+
+### BARC manifest
+
+By default, BARC roles will record that they have been applied to a system. This is recorded using a set of 
+[Ansible local facts](http://docs.ansible.com/ansible/playbooks_variables.html#local-facts-facts-d), specifically:
+
+* `ansible_local.barc-nginx.general.role_applied` - to indicate that this role has been applied to a system
+* `ansible_local.barc-nginx.general.role_version` - to indicate the version of this this role that has been applied
+
+Note: You **SHOULD** use this feature to determine whether this role has been applied to a system.
+
+If you do not want these facts to be set by this role, you **MUST** skip the **BARC_SET_MANIFEST** tag. No support is 
+offered in this case, as other roles or use-cases may rely on this feature. Therefore you **SHOULD** not disable this
+feature.
 
 ### Supported firewalls
 
@@ -267,7 +281,7 @@ manage a machine.
 ```yaml
 ---
 
-- name: setup system firewall
+- name: configure firewall
   hosts: all
   become: yes
   vars:
@@ -276,7 +290,7 @@ manage a machine.
         name_firewalld: ssh
         name_ufw: OpenSSH
   roles:
-    - BARC.system-firewall
+    - bas-ansible-roles-collection.system-firewall
 ```
 
 Note: This example is somewhat contrived as the SSH firewall service will be typically enabled already. As this role is
@@ -291,7 +305,7 @@ would like this:
   become: yes
   vars: []
   roles:
-    - BARC.system-firewall
+    - bas-ansible-roles-collection.system-firewall
 ```
 
 ### Tags
@@ -299,7 +313,7 @@ would like this:
 BARC roles use standardised tags to control which aspects of an environment are changed by roles. Where relevant, tags
 will be applied at a role, or task(s) level, as indicated below.
 
-This role uses the following tags, for all tasks:
+This role uses the following tags, for various tasks:
 
 TODO: Add other tags for package configurations etc.
 
@@ -308,13 +322,31 @@ TODO: Add other tags for package configurations etc.
 * [**BARC_CONFIGURE_FIREWALL**](https://antarctica.hackpad.com/BARC-Standardised-Tags-AviQxxiBa3y#:h=BARC_CONFIGURE_FIREWALL)
 * [**BARC_CONFIGURE_SECURITY**](https://antarctica.hackpad.com/BARC-Standardised-Tags-AviQxxiBa3y#:h=BARC_CONFIGURE_SECURITY)
 * [**BARC_CONFIGURE_PACKAGES**](https://antarctica.hackpad.com/BARC-Standardised-Tags-AviQxxiBa3y#:h=BARC_CONFIGURE_PACKAGE)
+* [**BARC_INSTALL**](https://antarctica.hackpad.com/BARC-Standardised-Tags-AviQxxiBa3y#:h=BARC_INSTALL)
 * [**BARC_INSTALL_PACKAGES**](https://antarctica.hackpad.com/BARC-Standardised-Tags-AviQxxiBa3y#:h=BARC_INSTALL_PACKAGE)
+* [**BARC_SET_MANIFEST**](https://antarctica.hackpad.com/BARC-Standardised-Tags-AviQxxiBa3y#:h=BARC_SET_MANIFEST)
 
 ### Variables
 
-#### *system_users_users*
+#### *BARC_role_name*
 
-A list of operating system user accounts, and their properties, to be managed by this role.
+* **MUST NOT** be specified
+* Specifies the name of this role within the BAS Ansible Roles Collection (BARC) used for setting local facts
+* See the *BARC roles manifest* section for more information
+* Example: system-firewall
+
+#### *BARC_role_version*
+
+* **MUST NOT** be specified
+* Specifies the name of this role within the BAS Ansible Roles Collection (BARC) used for setting local facts
+* See the *BARC roles manifest* section for more information
+* Example: 2.0.0
+
+#### *system_firewall_rules*
+
+* **MAY** be specified
+
+A list of firewall services, and their properties, to be managed by this role.
 
 Structured as a list of items, with each item having the following properties:
 
@@ -322,7 +354,7 @@ Structured as a list of items, with each item having the following properties:
     * **MUST** be specified where a firewall service is to be managed on Ubuntu/`ufw`, otherwise **MUST NOT** be
     specified
     * Specifies the name of the firewall application (service) to be managed
-    * The presence of this option is used to determine this item applies to Ubuntu/`ufw` machines
+    * The presence of this option determines this item applies to Ubuntu/`ufw` machines
     * Values **MUST** be valid user firewall applications (services), as determined by the `ufw` firewall
     * Example: `foo`
 * *rule*
@@ -363,7 +395,7 @@ Structured as a list of items, with each item having the following properties:
     * **MUST** be specified where a firewall service is to be managed on CentOS/`firewalld`, otherwise **MUST NOT** be
     specified
     * Specifies the name of the firewall service to be managed
-    * The presence of this option is used to determine this item applies to CentOS/`firewalld` machines
+    * The presence of this option determines this item applies to CentOS/`firewalld` machines
     * Values **MUST** be valid user firewall services, as determined by the `firewalld` firewall
     * Example: `foo`
 * *zone*
@@ -402,7 +434,7 @@ Default: `[]` - an empty list
 ### Issue tracking
 
 Issues, bugs, improvements, questions, suggestions and other tasks related to this package are managed through the 
-[BAS Ansible Role Collection](https://jira.ceh.ac.uk/projects/BARC) (BARC) project on Jira.
+[BAS Ansible Roles Collection](https://jira.ceh.ac.uk/projects/BARC) (BARC) project on Jira.
 
 This service is currently only available to BAS or NERC staff, although external collaborators can be added on request.
 See our contributing policy for more information.
@@ -416,7 +448,7 @@ All changes should be committed, via pull request, to the canonical repository, 
 A mirror of this repository is maintained on GitHub. Changes are automatically pushed from the canonical repository to
 this mirror, in a one-way process.
 
-`git@github.com:antarctica/ansible-system-firewall.git`
+`git@github.com:bas-ansible-roles-collection/system-firewall.git`
 
 Note: The canonical repository is only accessible within the NERC firewall. External collaborators, please make pull 
 requests against the mirrored GitHub repository and these will be merged as appropriate.
@@ -434,6 +466,11 @@ workflow is used to manage the development of this project:
 required and merge into master with a tagged, semantic version (e.g. v1.2.3)
 * After each release, the master branch should be merged with develop to restart the process
 * High impact bugs can be addressed in hotfix branches, created from and merged into master (then develop) directly
+
+### Release procedure
+
+See [here](https://antarctica.hackpad.com/BARC-Overview-and-Policies-SzcHzHvitkt#:h=Release-procedures) for general 
+release procedures for BARC roles.
 
 ## Licence
 

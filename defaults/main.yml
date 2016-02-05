@@ -1,4 +1,10 @@
 ---
 # Default variables - inventory or playbook overrides will be respected
 
+
+# BARC specific variables
+BARC_role_name: system-firewall
+BARC_role_version: 0.2.0
+
+# system-firewall specific variables
 system_firewall_rules: []
