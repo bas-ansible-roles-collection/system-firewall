@@ -7,6 +7,8 @@ Note: Developers - make sure to set the `BARC_role_version` variable when releas
 
 ## [Unreleased][unreleased]
 
+## 0.2.1 - 05/02/2016
+
 ### Fixed
 
 * Missing 'system-hostname' role application in test playbook
