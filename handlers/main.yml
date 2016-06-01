@@ -1,5 +1,5 @@
 ---
-# Handlers for system-ssh
+# Handlers for system-firewall
 
 - name: Restart Firewall - CentOS
   service:

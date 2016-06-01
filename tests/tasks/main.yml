@@ -1,21 +1,29 @@
 ---
-# Tests the changes made to the system firewall by this role
+# Tests ...
 
-# Management and configuration checks
-# These checks mirror individual tasks to ensure they execute correctly
-# (I.e. that they create a user in the right package or create the correct config file)
+# Flush handlers
+#
+# This ensures any pending handlers are executed before any tests are performed. This is particularly important where
+# a service needs to be restarted before new configuration options are used for example.
 
-# Core configuration
+- meta: flush_handlers
 
-- include: install-firewall.yml
+# Reload local facts
+#
+# This ensures any Ansible local facts registered by tasks in the current playbook are loaded and so can be tested.
 
-- include: configure-firewall.yml
+- action: setup
 
-- include: register-role.yml
+# Atomic tests
+#
+# These tests mirror individual tasks to ensure they execute correctly
+# E.g. creating a user, installing the right package or generating a valid configuration file
 
-# Functionality checks
-# These checks need to run after the package or service has been configured to ensure it is working correctly,
-# using an configuration that may have been set by this role.
+- include: atomic/register-role.yml
 
-# In this role functionality checks are verified by an external VM (to check if ports are open or closed).
-# To do this a special port testing VM will run the 'functional-tests.yml' task file located alongside this file.
+# Functionality tests
+#
+# These tests ensure overall processes can be completed to give a valid result
+# E.g. checking a web-server serves a web-page ensures the relevant packages and configuration files work together
+
+- include: functionality/barc-manifest.yml

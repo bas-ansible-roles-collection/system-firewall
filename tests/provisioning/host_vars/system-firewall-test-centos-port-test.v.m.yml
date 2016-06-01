@@ -1,7 +1,5 @@
 ---
-# These variables override those defined by roles
-
-# Note: The 'port' option is not supported by the system firewall role, it used exclusively for testing.
+# These variables override those set by roles and group variables
 
 system_firewall_rules:
   -

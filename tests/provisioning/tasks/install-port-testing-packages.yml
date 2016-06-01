@@ -1,5 +1,5 @@
 ---
-# Tasks for the 'barc-system-firewall-test-port-test.v.m' node
+# Install packages for testing firewall ports
 
 - name: install nmap package
   apt:
