@@ -11,7 +11,7 @@
     permanent="{{ item.permanent        | default (True) }}"
         state="{{ item.state_firewalld | default ('enabled') }}"
   when: ansible_distribution == "CentOS" and item.name_firewalld is defined
-  with_items: system_firewall_rules
+  with_items: "{{ system_firewall_rules }}"
   notify: Restart Firewall - CentOS
 
 - name: configure firewall rules for service - Ubuntu/UFW
@@ -21,7 +21,7 @@
     direction="{{ item.direction  | default('in') }}"
        delete="{{ item.state_ufw  | default('no') }}"
   when: ansible_distribution == "Ubuntu" and item.name_ufw is defined
-  with_items: system_firewall_rules
+  with_items: "{{ system_firewall_rules }}"
   notify: Restart Firewall - Ubuntu
 
 - name: ensure firewall is active and enabled on start up - CentOS/firewalld
