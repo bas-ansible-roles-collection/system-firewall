@@ -1,0 +1,36 @@
+---
+# Run tests for role
+
+- name: prepare nodes with additional firewall applications for testing - Ubuntu/UFW
+  hosts: system-firewall-test-ubuntu-basic.v.m
+  remote_user: "{{ privileged_remote_user }}"
+  become: yes
+  tasks:
+    - include: tasks/create-test-firewall-applications.yml
+
+- name: prepare port test machine for functional testing
+  hosts: system-firewall-test-port-test.v.m
+  remote_user: "{{ privileged_remote_user }}"
+  become: yes
+  tasks:
+    - include: tasks/install-port-testing-packages.yml
+
+- name: apply role and run tests
+  hosts:
+    - system-firewall-test-ubuntu-basic.v.m
+    - system-firewall-test-centos-basic.v.m
+  remote_user: "{{ privileged_remote_user }}"
+  become: yes
+  roles:
+    - ../../../system-firewall
+  tasks:
+    - include: ../tasks/main.yml
+
+# Functional tests are currently disabled due to difficulties in testing the status of a port without a service
+# listening on each port.
+
+- name: perform functionality checks for this role on an external port testing machine
+  hosts: system-firewall-test-port-test.v.m
+  remote_user: "{{ privileged_remote_user }}"
+  become: yes
+  tasks: []

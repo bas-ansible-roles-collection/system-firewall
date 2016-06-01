@@ -1,9 +1,9 @@
 ---
-# Tasks for the 'barc-system-firewall-test-ubuntu-bare.v.m.yml' node
+# Test firewall applications for testing port connections
 
 - name: copy test firewall application for http
   copy:
-    src=data/firewall-profiles/http-test
+    src=files/etc/ufw/applications.d/http-test
     dest=/etc/ufw/applications.d/http-test
 - name: register firewall application for http with UFW
   command: ufw app update http-test
@@ -11,7 +11,7 @@
 
 - name: copy test firewall application for https
   copy:
-    src=data/firewall-profiles/https-test
+    src=files/etc/ufw/applications.d/https-test
     dest=/etc/ufw/applications.d/https-test
 - name: register firewall application for https with UFW
   command: ufw app update https-test
