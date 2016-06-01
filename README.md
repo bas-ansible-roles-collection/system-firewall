@@ -20,6 +20,16 @@ Configures the system firewall and manages system firewall services for a machin
 This role uses manual and automated testing to ensure its features work as advertised.
 See [here](tests/README.md) for more information.
 
+## Ansible compatibility
+
+* this role supports Ansible 1.8 or higher in the 1.x series
+* this role supports Ansible 2.x
+
+**Note:** Support for Ansible 1.x is deprecated by this role, future versions will support Ansible 2.x only.
+
+More information on Ansible compatibility is available in the
+[BARC General Documentation](https://antarctica.hackpad.com/BARC-Overview-and-Policies-SzcHzHvitkt#:h=Ansible-compatbility).
+
 ## Dependencies
 
 * none

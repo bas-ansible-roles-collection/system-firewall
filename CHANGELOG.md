@@ -7,6 +7,10 @@ Remember: Make sure to update system_firewall_barc_role_version variable when a 
 
 ## [Unreleased][unreleased]
 
+### Fixed
+
+* Updating role to address deprecations in Ansible 2
+
 ### Changed
 
 * Updating role to use Pristine project template - BARC flavour, version 0.3.0
