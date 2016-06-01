@@ -7,6 +7,8 @@ Remember: Make sure to update system_firewall_barc_role_version variable when a 
 
 ## [Unreleased][unreleased]
 
+## 0.3.0 - 01/05/2016
+
 ### Fixed
 
 * Updating role to address deprecations in Ansible 2
